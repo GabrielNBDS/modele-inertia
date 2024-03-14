@@ -10,7 +10,15 @@ export default defineConfig({
    * Data that should be shared with all rendered pages
    */
   sharedData: {
-    errors: (ctx) => ctx.session?.flashMessages.get('errors'),
+    errors: (ctx) => ctx.session.flashMessages.get('errors'),
+    qs: (ctx) => ctx.request.qs(),
+    params: (ctx) => ctx.request.params(),
+    user: async (ctx) => {
+      if (!ctx.auth.user) {
+        return null
+      }
+      return ctx.auth.user.toJSON()
+    },
   },
 
   /**
@@ -19,5 +27,6 @@ export default defineConfig({
   ssr: {
     enabled: true,
     entrypoint: 'inertia/app/ssr.tsx',
+    pages: ['home'],
   },
 })
