@@ -12,6 +12,8 @@ export default class extends BaseSchema {
       table.string('name').nullable()
       table.string('email', 254).notNullable().unique()
       table.string('password').notNullable()
+      table.boolean('verified_email').defaultTo(false)
+      table.string('desired_email').nullable()
 
       table.integer('role_id').unsigned().references('id').inTable('roles')
 
@@ -28,7 +30,8 @@ export default class extends BaseSchema {
         email: 'admin@admin.com',
         password: hashedPassword,
         role_id: Roles.ADMIN,
-        created_at: Date.now(),
+        created_at: new Date(),
+        verified_email: true,
       })
     })
   }

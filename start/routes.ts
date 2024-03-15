@@ -9,6 +9,8 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const ResendVerificationEmailController = () =>
+  import('../app/modules/users/resend_verification_email/resend_verification_email_controller.js')
 const UpdateUserController = () =>
   import('../app/modules/users/update_user/update_user_controller.js')
 const ChangePasswordController = () =>
@@ -38,6 +40,7 @@ router
   .group(() => {
     router.get('/perfil', [UpdateUserController, 'view'])
     router.post('/perfil', [UpdateUserController, 'handle'])
+    router.post('/verificar-email', [ResendVerificationEmailController, 'handle'])
     router.get('/seguranca', [ChangePasswordController, 'view'])
     router.post('/seguranca', [ChangePasswordController, 'handle'])
   })

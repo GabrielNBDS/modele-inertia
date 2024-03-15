@@ -5,9 +5,8 @@ import { Label } from '@/components/label'
 import { FcGoogle } from 'react-icons/fc'
 import { LuLock, LuSend } from 'react-icons/lu'
 import AuthLayout from '../layout'
-import { Link, router, useForm } from '@inertiajs/react'
+import { Link, useForm } from '@inertiajs/react'
 import { LoadingButton } from '@/components/loading_button'
-import usePageProps from '@/hooks/use_page_props'
 import useError from '@/hooks/use_error'
 import { Alert, AlertDescription, AlertTitle } from '@/components/alert'
 import { toast } from 'sonner'
@@ -70,7 +69,7 @@ function Login() {
             Esqueci a senha
           </Link>
         </div>
-        {error?.length > 0 && (
+        {(error?.length ?? 0) > 0 && (
           <Alert variant="destructive" className="mb-4">
             <AlertTitle>
               <LuLock className="h-4 w-4" />

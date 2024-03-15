@@ -6,7 +6,7 @@ export default class UpdateUserController {
     return inertia.render('settings/profile')
   }
 
-  async handle({ request, auth, response }: HttpContext) {
+  async handle({ auth, session, request, response }: HttpContext) {
     const user = auth.user!
 
     const { name, email } = await request.validateUsing(updateUserValidator, {
@@ -15,7 +15,13 @@ export default class UpdateUserController {
       },
     })
 
-    user?.merge({ name, email })
+    user?.merge({ name })
+
+    if (email !== user.email) {
+      user.desiredEmail = email
+
+      session.flash('emailChanged', true)
+    }
 
     await user.save()
 

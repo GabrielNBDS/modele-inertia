@@ -9,10 +9,9 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  @vite(['inertia/css/app.css'])
   @viteReactRefresh()
   @inertiaHead()
-  @vite(['inertia/app/app.tsx', `inertia/pages/${page.component}.tsx`])
+  @vite(['inertia/app/app.tsx', `inertia/pages/${page.component}/page.tsx`])
 </head>
 
 <body>
