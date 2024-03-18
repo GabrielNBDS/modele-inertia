@@ -1,10 +1,23 @@
-import { Toaster as Sonner } from 'sonner'
+import useFlash from '@/hooks/use_flash'
+import { useEffect } from 'react'
+import { Toaster as Sonner, toast } from 'sonner'
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
 const Toaster = ({ ...props }: ToasterProps) => {
+  const { notifications } = useFlash<{
+    notifications?: { type: 'success' | 'error' | 'info' | 'warning'; message: string }[]
+  }>()
+
+  useEffect(() => {
+    notifications?.forEach((notification) => {
+      toast[notification.type](notification.message)
+    })
+  }, [notifications])
+
   return (
     <Sonner
+      richColors
       className="toaster group"
       toastOptions={{
         classNames: {

@@ -1,5 +1,6 @@
 import ProfileForm from './profile_form'
 import SettingsLayout from '../layout'
+import { ReactNode } from 'react'
 
 const SettingsProfilePage = () => {
   return (
@@ -13,6 +14,6 @@ const SettingsProfilePage = () => {
   )
 }
 
-SettingsProfilePage.layout = (page) => <SettingsLayout children={page} />
+SettingsProfilePage.layout = (page: ReactNode) => <SettingsLayout children={page} />
 
 export default SettingsProfilePage

@@ -1,3 +1,5 @@
+import { Toaster } from '@/components/toaster'
+
 interface AuthLayoutProps {
   children: JSX.Element
   subtitle: JSX.Element
@@ -6,6 +8,7 @@ interface AuthLayoutProps {
 export default function AuthLayout({ children, subtitle }: AuthLayoutProps) {
   return (
     <>
+      <Toaster />
       <div id="page-container" className="mx-auto flex min-h-dvh w-full min-w-[320px] flex-col">
         <main id="page-content" className="flex max-w-full flex-auto flex-col">
           <div className="relative mx-auto flex min-h-dvh w-full max-w-8xl justify-center overflow-hidden p-4 lg:p-8">

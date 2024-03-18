@@ -40,6 +40,7 @@ router
   .group(() => {
     router.get('/perfil', [UpdateUserController, 'view'])
     router.post('/perfil', [UpdateUserController, 'handle'])
+    router.post('/atualizar-email', [UpdateUserController, 'handleEmailUpdate'])
     router.post('/verificar-email', [ResendVerificationEmailController, 'handle'])
     router.get('/seguranca', [ChangePasswordController, 'view'])
     router.post('/seguranca', [ChangePasswordController, 'handle'])

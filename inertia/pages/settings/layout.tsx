@@ -2,6 +2,7 @@ import { Separator } from '@/components/separator'
 import Header from '@/components/header'
 import { SidebarNav } from './sidebar_nav'
 import { LuLock, LuUser } from 'react-icons/lu'
+import { Toaster } from '@/components/toaster'
 
 const sidebarNavItems = [
   {
@@ -23,6 +24,7 @@ interface SettingsLayoutProps {
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <>
+      <Toaster />
       <Header />
       <div className="container mx-auto xl:max-w-5xl border shadow-md rounded-[0.5rem]">
         <div className="md:hidden">
