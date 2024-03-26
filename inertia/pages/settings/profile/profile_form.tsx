@@ -10,13 +10,12 @@ import { LuAlertCircle } from 'react-icons/lu'
 import { toast } from 'sonner'
 
 export default function ProfileForm() {
-  const { emailChanged, ...rest } = useFlash<{ emailChanged?: boolean }>()
-  console.log(rest)
-  const user = useUser()
+  const { emailChanged } = useFlash<{ emailChanged?: boolean }>()
+  const user = useUser()!
 
   const { data, setData, post, processing } = useForm({
-    name: user!.name,
-    email: user!.email,
+    name: user.name,
+    email: user.email,
   })
 
   const {

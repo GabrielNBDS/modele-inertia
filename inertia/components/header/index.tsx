@@ -6,7 +6,7 @@ import { Separator } from '../separator'
 import { LuLogOut } from 'react-icons/lu'
 
 function HeaderPopUp() {
-  const user = useUser()
+  const user = useUser()!
 
   return (
     <Popover>

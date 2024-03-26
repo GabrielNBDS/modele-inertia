@@ -9,8 +9,10 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
-const ResendVerificationEmailController = () =>
-  import('../app/modules/users/resend_verification_email/resend_verification_email_controller.js')
+const VerifyEmailController = () =>
+  import('../app/modules/users/verify_email/verify_email_controller.js')
+const RegisterController = () =>
+  import('../app/modules/auth/use_cases/register/register_controller.js')
 const UpdateUserController = () =>
   import('../app/modules/users/update_user/update_user_controller.js')
 const ChangePasswordController = () =>
@@ -23,6 +25,10 @@ router.get('/', ({ inertia }) => {
 
 router.get('/entrar', [LoginController, 'view']).middleware(middleware.guest())
 router.post('/login', [LoginController, 'handle'])
+
+router.get('/cadastrar', [RegisterController, 'view']).middleware(middleware.guest())
+router.post('/register', [RegisterController, 'handle']).middleware(middleware.guest())
+
 router
   .post('logout', async ({ auth, response }) => {
     await auth.use('web').logout()
@@ -41,14 +47,16 @@ router
     router.get('/perfil', [UpdateUserController, 'view'])
     router.post('/perfil', [UpdateUserController, 'handle'])
     router.post('/atualizar-email', [UpdateUserController, 'handleEmailUpdate'])
-    router.post('/verificar-email', [ResendVerificationEmailController, 'handle'])
+    router.get('/verificar-email', [VerifyEmailController, 'view'])
+    router.post('/verificar-email', [VerifyEmailController, 'handle'])
+    router.post('/verificar-email/reenviar', [VerifyEmailController, 'resend'])
     router.get('/seguranca', [ChangePasswordController, 'view'])
     router.post('/seguranca', [ChangePasswordController, 'handle'])
   })
   .prefix('/configuracoes')
   .use(middleware.auth())
 
-router.on('/cadastrar').renderInertia('auth/sign-up')
+router.post('/reenviar-email-de-verificacao', [VerifyEmailController, 'handle'])
+
 router.on('/email-link').renderInertia('auth/magic-link')
 router.on('/esqueci-minha-senha').renderInertia('auth/forgot-password')
-router.on('/verificar-email').renderInertia('auth/verify')

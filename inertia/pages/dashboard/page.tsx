@@ -1,6 +1,7 @@
 import Header from '@/components/header'
+import DashboardLayout from './layout'
 
-export default function Dashboard() {
+function Dashboard() {
   return (
     <>
       <Header />
@@ -8,3 +9,7 @@ export default function Dashboard() {
     </>
   )
 }
+
+Dashboard.layout = (page: JSX.Element) => <DashboardLayout children={page} />
+
+export default Dashboard

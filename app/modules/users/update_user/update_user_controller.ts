@@ -54,7 +54,7 @@ export default class UpdateUserController {
             .to(email)
             .from('contato@lis-software.com.br')
             .subject('Confirme seu novo endereço de e-mail')
-            .htmlView('mails/verify_email', { code })
+            .htmlView('mails/change_email', { code })
         })
 
         session.flash('emailChanged', true)

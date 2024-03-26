@@ -1,31 +1,57 @@
 import { Button } from '@/components/button'
-import { Checkbox } from '@/components/checkbox'
 import { Input } from '@/components/input'
 import { Label } from '@/components/label'
 import { FcGoogle } from 'react-icons/fc'
 import { LuSend } from 'react-icons/lu'
 import AuthLayout from '../layout'
-import { Link } from '@inertiajs/react'
+import { Link, useForm } from '@inertiajs/react'
+import { LoadingButton } from '@/components/loading_button'
 
 function SignUp() {
+  const { data, setData, post, processing } = useForm({
+    name: '',
+    email: '',
+    password: '',
+  })
+
   return (
-    <form className="space-y-6">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        post('/register')
+      }}
+      className="space-y-6"
+    >
       <div className="space-y-1">
         <Label htmlFor="name">Nome</Label>
-        <Input id="name" name="name" required />
+        <Input onChange={(e) => setData('name', e.target.value)} id="name" name="name" required />
       </div>
 
       <div className="space-y-1">
         <Label htmlFor="email">E-mail</Label>
-        <Input id="email" name="email" type="email" required />
+        <Input
+          onChange={(e) => setData('email', e.target.value)}
+          id="email"
+          name="email"
+          type="email"
+          required
+        />
       </div>
 
       <div className="space-y-1">
         <Label htmlFor="password">Senha</Label>
-        <Input id="password" name="password" type="password" required />
+        <Input
+          onChange={(e) => setData('password', e.target.value)}
+          id="password"
+          name="password"
+          type="password"
+          required
+        />
       </div>
       <div>
-        <Button className="w-full">Cadastrar</Button>
+        <LoadingButton loading={processing} className="w-full">
+          Cadastrar
+        </LoadingButton>
 
         <div className="my-5 flex items-center">
           <span aria-hidden="true" className="h-0.5 grow rounded bg-gray-100 dark:bg-gray-700/75" />

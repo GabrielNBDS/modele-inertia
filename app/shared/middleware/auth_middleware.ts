@@ -27,6 +27,15 @@ export default class AuthMiddleware {
       return ctx.response.unauthorized('Unauthorized access')
     }
 
+    if (!user.verifiedEmail) {
+      if (
+        ctx.request.url() !== '/configuracoes/verificar-email' &&
+        ctx.request.url() !== '/configuracoes/verificar-email/reenviar'
+      ) {
+        return ctx.response.redirect('/configuracoes/verificar-email')
+      }
+    }
+
     return next()
   }
 }
