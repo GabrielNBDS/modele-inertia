@@ -1,9 +1,17 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { BaseModel, beforeCreate, column } from '@adonisjs/lucid/orm'
+import { v4 as uuidv4 } from 'uuid'
 
 export default class Role extends BaseModel {
+  static selfAssignPrimaryKey = true
+
   @column({ isPrimary: true })
-  declare id: number
+  declare id: string
+
+  @beforeCreate()
+  static assignUuid(role: Role) {
+    role.id = uuidv4()
+  }
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

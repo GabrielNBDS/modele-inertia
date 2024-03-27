@@ -19,6 +19,6 @@ export const updateUserValidator = vine.compile(
 
 export const confirmEmailUpdateValidator = vine.compile(
   vine.object({
-    code: vine.string(),
+    code: vine.string().optional(),
   })
 )

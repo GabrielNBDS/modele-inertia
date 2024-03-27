@@ -1,6 +1,6 @@
 import { HttpContext } from '@adonisjs/core/http'
-import { loginValidator } from './login_validator.js'
 import User from '../../../../shared/models/user.js'
+import { loginValidator } from './validator.js'
 
 export default class LoginController {
   async view({ inertia }: HttpContext) {

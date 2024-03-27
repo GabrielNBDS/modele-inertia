@@ -1,6 +1,6 @@
 import { HttpContext } from '@adonisjs/core/http'
-import { changePasswordValidator } from './change_password_validator.js'
 import hash from '@adonisjs/core/services/hash'
+import { changePasswordValidator } from './validator.js'
 
 export default class ChangePasswordController {
   async view({ inertia }: HttpContext) {

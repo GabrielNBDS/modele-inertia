@@ -1,6 +1,9 @@
 import { HttpContext } from '@adonisjs/core/http'
 import mail from '@adonisjs/mail/services/main'
-import { verifyEmailValidator } from './verify_email_validator.js'
+import { verifyEmailValidator } from './validator.js'
+import Code from '../../../../shared/models/code.js'
+import CodeTypes from '../../../../shared/enums/code_types.js'
+import db from '@adonisjs/lucid/services/db'
 
 export default class VerifyEmailController {
   async view({ auth, inertia, response }: HttpContext) {
@@ -16,19 +19,36 @@ export default class VerifyEmailController {
 
     const { code } = await request.validateUsing(verifyEmailValidator)
 
-    if (code !== user.code) {
-      session.flash('notifications', [{ type: 'error', message: 'Código Incorreto' }])
+    const foundCode = await Code.query().where('user_id', user.id).andWhere('value', code).first()
 
+    if (!foundCode) {
+      session.flash('notifications', [{ type: 'error', message: 'Código incorreto' }])
       return response.redirect().back()
     }
 
-    user.verifiedEmail = true
-    user.code = undefined
-    await user.save()
+    if (foundCode.isExpired()) {
+      session.flash('notifications', [{ type: 'error', message: 'Código expirado' }])
+      return response.redirect().back()
+    }
 
-    session.flash('notifications', [{ type: 'success', message: 'E-mail validado!' }])
+    if (foundCode && foundCode.metadata?.type === CodeTypes.REGISTERED_USER) {
+      user.verifiedEmail = true
 
-    return response.redirect('/dashboard')
+      await db.transaction(async (trx) => {
+        user.useTransaction(trx)
+        foundCode.useTransaction(trx)
+
+        await user.save()
+        await foundCode.delete()
+      })
+
+      session.flash('notifications', [{ type: 'success', message: 'E-mail validado!' }])
+
+      return response.redirect('/dashboard')
+    } else {
+      session.flash('notifications', [{ type: 'error', message: 'Erro ao validar e-mail' }])
+      return response.redirect().back()
+    }
   }
 
   async resend({ auth, session, response }: HttpContext) {
@@ -40,8 +60,6 @@ export default class VerifyEmailController {
       for (let i = 0; i < 6; i++) {
         code += Math.floor(Math.random() * 10)
       }
-
-      user.code = code
 
       await user.save()
 

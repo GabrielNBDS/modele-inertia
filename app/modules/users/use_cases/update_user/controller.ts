@@ -1,6 +1,10 @@
 import { HttpContext } from '@adonisjs/core/http'
-import { confirmEmailUpdateValidator, updateUserValidator } from './update_user_validator.js'
 import mail from '@adonisjs/mail/services/main'
+import { confirmEmailUpdateValidator, updateUserValidator } from './validator.js'
+import Code from '../../../../shared/models/code.js'
+import db from '@adonisjs/lucid/services/db'
+import CodeTypes from '../../../../shared/enums/code_types.js'
+import { DateTime } from 'luxon'
 
 export default class UpdateUserController {
   async view({ inertia }: HttpContext) {
@@ -11,12 +15,37 @@ export default class UpdateUserController {
     const user = auth.user!
     const { code } = await request.validateUsing(confirmEmailUpdateValidator)
 
-    if (user.code === code && user.desiredEmail) {
-      user.email = user.desiredEmail
-      user.code = undefined
-      user.desiredEmail = undefined
+    const foundCode = await Code.query()
+      .where('user_id', user.id)
+      .andWhere('value', code ?? '')
+      .first()
 
-      await user.save()
+    if (!foundCode) {
+      session.flash('emailChanged', true)
+      session.flash('notifications', [{ type: 'error', message: 'Código incorreto' }])
+      return response.redirect().back()
+    }
+
+    if (foundCode.isExpired()) {
+      session.flash('emailChanged', true)
+      session.flash('notifications', [{ type: 'error', message: 'Código expirado' }])
+      return response.redirect().back()
+    }
+
+    if (
+      foundCode &&
+      foundCode.metadata?.type === CodeTypes.EMAIL_UPDATE &&
+      typeof foundCode.metadata?.desiredEmail === 'string'
+    ) {
+      user.email = foundCode.metadata.desiredEmail
+
+      await db.transaction(async (trx) => {
+        user.useTransaction(trx)
+        foundCode.useTransaction(trx)
+
+        await user.save()
+        await foundCode.delete()
+      })
 
       session.flash('notifications', [{ type: 'success', message: 'E-mail atualizado!' }])
     } else {
@@ -39,20 +68,23 @@ export default class UpdateUserController {
     user?.merge({ name })
 
     if (email !== user.email) {
-      user.desiredEmail = email
-
       let code = ''
       for (let i = 0; i < 6; i++) {
         code += Math.floor(Math.random() * 10)
       }
 
-      user.code = code
+      await Code.create({
+        userId: user.id,
+        value: code,
+        expiresAt: DateTime.now().plus({ minutes: 30 }),
+        metadata: { type: CodeTypes.EMAIL_UPDATE, desiredEmail: email },
+      })
 
       try {
         await mail.sendLater((message) => {
           message
             .to(email)
-            .from('contato@lis-software.com.br')
+            .from('contato@lis-software.com.br', 'Modèle')
             .subject('Confirme seu novo endereço de e-mail')
             .htmlView('mails/change_email', { code })
         })
