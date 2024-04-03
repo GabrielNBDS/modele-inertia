@@ -68,14 +68,8 @@ export default class UpdateUserController {
     user?.merge({ name })
 
     if (email !== user.email) {
-      let code = ''
-      for (let i = 0; i < 6; i++) {
-        code += Math.floor(Math.random() * 10)
-      }
-
-      await Code.create({
+      const code = await Code.create({
         userId: user.id,
-        value: code,
         expiresAt: DateTime.now().plus({ minutes: 30 }),
         metadata: { type: CodeTypes.EMAIL_UPDATE, desiredEmail: email },
       })
@@ -86,7 +80,7 @@ export default class UpdateUserController {
             .to(email)
             .from('contato@lis-software.com.br', 'Modèle')
             .subject('Confirme seu novo endereço de e-mail')
-            .htmlView('mails/change_email', { code })
+            .htmlView('mails/change_email', { code: code.value })
         })
 
         session.flash('emailChanged', true)

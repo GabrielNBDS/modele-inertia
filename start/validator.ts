@@ -5,4 +5,5 @@ vine.messagesProvider = new SimpleMessagesProvider({
   'email': 'Formato inválido',
   'minLength': 'Mínimo de {{ min }} caracteres',
   'email.database.unique': 'Este e-mail já está em uso',
+  'email.database.exists': 'Esse e-mail não foi encontrado',
 })

@@ -2,7 +2,7 @@ import { Toaster } from '@/components/toaster'
 
 interface AuthLayoutProps {
   children: JSX.Element
-  subtitle: JSX.Element
+  subtitle?: JSX.Element
 }
 
 export default function AuthLayout({ children, subtitle }: AuthLayoutProps) {

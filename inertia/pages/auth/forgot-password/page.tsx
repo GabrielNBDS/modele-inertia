@@ -1,20 +1,28 @@
-import { Input } from '@/components/input'
-import { Label } from '@/components/label'
+import useFlash from '@/hooks/use_flash'
 import AuthLayout from '../layout'
 import { Link } from '@inertiajs/react'
-import { Button } from '@/components/button'
+import ForgotPasswordFirstStep from './first_step'
+import ForgotPasswordSecondStep from './second_step'
+import ForgotPasswordThirdStep from './third_step'
 
-function MagicLink() {
+function ForgotPassword() {
+  const { emailSent, codeValidated } = useFlash<{ emailSent: boolean; codeValidated: boolean }>()
+
   return (
     <>
-      <form className="space-y-6">
-        <div className="space-y-1">
-          <Label htmlFor="email">E-mail</Label>
-          <Input id="email" name="email" type="email" required />
-        </div>
+      <p className="text-muted-foreground text-center mb-6">
+        {!emailSent &&
+          !codeValidated &&
+          'Digite seu e-mail para receber um link de recuperação de senha.'}
+        {emailSent && 'Um e-mail com um código de confirmação foi enviado. Digite-o abaixo'}
+        {codeValidated && 'Último passo, escolha uma nova senha'}
+      </p>
 
-        <Button className="w-full">Enviar Link</Button>
-      </form>
+      {!emailSent && !codeValidated && <ForgotPasswordFirstStep />}
+
+      {emailSent && <ForgotPasswordSecondStep />}
+
+      {codeValidated && <ForgotPasswordThirdStep />}
 
       <div className="text-center mt-4">
         <Link href="/entrar" className="font-medium text-primary hover:underline">
@@ -25,15 +33,8 @@ function MagicLink() {
   )
 }
 
-MagicLink.layout = (page: JSX.Element) => (
-  <AuthLayout
-    subtitle={
-      <p className="text-muted-foreground">
-        Digite seu e-mail para receber um link de recuperação de senha.
-      </p>
-    }
-    children={page}
-  />
-)
+ForgotPassword.layout = (page: JSX.Element) => {
+  return <AuthLayout children={page} />
+}
 
-export default MagicLink
+export default ForgotPassword

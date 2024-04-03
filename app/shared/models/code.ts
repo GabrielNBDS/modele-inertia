@@ -15,6 +15,16 @@ export default class Code extends BaseModel {
     code.id = uuidv4()
   }
 
+  @beforeCreate()
+  static generateCode(model: Code) {
+    let code = ''
+    for (let i = 0; i < 6; i++) {
+      code += Math.floor(Math.random() * 10)
+    }
+
+    model.value = code
+  }
+
   @column()
   declare value: string
 

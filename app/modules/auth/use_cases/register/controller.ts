@@ -15,11 +15,6 @@ export default class RegisterController {
     await db.transaction(async (trx) => {
       const { name, email, password } = await request.validateUsing(registerValidator)
 
-      let code = ''
-      for (let i = 0; i < 6; i++) {
-        code += Math.floor(Math.random() * 10)
-      }
-
       const user = new User()
 
       user.useTransaction(trx)
@@ -28,9 +23,8 @@ export default class RegisterController {
 
       await user.save()
 
-      await user.related('codes').create({
+      const code = await user.related('codes').create({
         userId: user.id,
-        value: code,
         metadata: { type: CodeTypes.REGISTERED_USER },
         expiresAt: DateTime.now().plus({ minutes: 30 }),
       })
@@ -40,7 +34,7 @@ export default class RegisterController {
           .to(email)
           .from('contato@lis-software.com.br')
           .subject('Verifique seu endereço de e-mail')
-          .htmlView('mails/verify_email', { code })
+          .htmlView('mails/verify_email', { code: code.value })
       })
 
       session.flash('notifications', [{ type: 'success', message: 'Conta criada!' }])
