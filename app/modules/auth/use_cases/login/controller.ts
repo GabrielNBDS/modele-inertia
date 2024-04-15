@@ -1,6 +1,8 @@
 import { HttpContext } from '@adonisjs/core/http'
 import User from '../../../../shared/models/user.js'
 import { loginValidator } from './validator.js'
+import Session from '../../../../shared/models/session.js'
+import { v4 as uuidv4 } from 'uuid'
 
 export default class LoginController {
   async view({ inertia }: HttpContext) {
@@ -12,11 +14,31 @@ export default class LoginController {
 
     try {
       const user = await User.verifyCredentials(email, password)
-      await auth.use('web').login(user)
+      await auth.use('web').login(user, true)
 
-      return response.redirect().toPath('/')
+      const sessionToken = uuidv4()
+
+      await Session.create({
+        id: session.sessionId,
+        userId: user.id,
+        ipAddress: request.ip(),
+        userAgent: request.header('User-Agent'),
+        sessionToken,
+      })
+
+      session.put('session-token', sessionToken)
+
+      session.flash('notifications', [{ type: 'success', message: 'Bem-vindo!' }])
+      return response.redirect().toPath('/dashboard')
     } catch (error) {
-      session.flash('errors.auth', 'Credenciais inválidas')
+      auth.use('web').logout()
+
+      if (error.code === 'E_INVALID_CREDENTIALS') {
+        session.flash('errors.auth', 'Credenciais inválidas')
+      } else {
+        session.flash('errors.auth', 'Ocorreu um erro. Tente novamente mais tarde')
+      }
+
       return response.redirect().back()
     }
   }

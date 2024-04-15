@@ -1,8 +1,7 @@
-import { Input } from '@/components/input'
-import { LoadingButton } from '@/components/loading_button'
+import FormControl from '@/components/form_control'
 import useFlash from '@/hooks/use_flash'
+import { Button, Stack } from '@chakra-ui/react'
 import { useForm } from '@inertiajs/react'
-import { Label } from '@radix-ui/react-label'
 
 export default function ForgotPasswordThirdStep() {
   const { email, code } = useFlash<{ email?: string; code?: string }>()
@@ -14,28 +13,25 @@ export default function ForgotPasswordThirdStep() {
   })
 
   return (
-    <>
-      <form
-        className="space-y-6"
-        onSubmit={(e) => {
-          e.preventDefault()
-          post('/esqueci-minha-senha/trocar-senha')
-        }}
-      >
-        <div className="space-y-1">
-          <Label htmlFor="email">Nova Senha</Label>
-          <Input
-            id="password"
-            name="password"
-            type="password"
-            onChange={(e) => setData('password', e.target.value)}
-          />
-        </div>
+    <Stack
+      spacing="6"
+      as="form"
+      className="space-y-6"
+      onSubmit={(e) => {
+        e.preventDefault()
+        post('/esqueci-minha-senha/trocar-senha')
+      }}
+    >
+      <FormControl
+        label="Nova Senha"
+        id="password"
+        type="password"
+        onChange={(e) => setData('password', e.target.value)}
+      />
 
-        <LoadingButton loading={processing} className="w-full">
-          Trocar Senha
-        </LoadingButton>
-      </form>
-    </>
+      <Button type="submit" isLoading={processing} w="full">
+        Trocar Senha
+      </Button>
+    </Stack>
   )
 }

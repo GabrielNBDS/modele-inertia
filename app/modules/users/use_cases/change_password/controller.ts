@@ -23,6 +23,8 @@ export default class ChangePasswordController {
 
     await user.save()
 
+    session.flash('notifications', [{ type: 'success', message: 'Senha atualizada!' }])
+
     return response.redirect().back()
   }
 }

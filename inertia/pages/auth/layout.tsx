@@ -1,32 +1,61 @@
-import { Toaster } from '@/components/toaster'
+import { Logo } from '@/components/logo'
+import Toaster from '@/components/toaster'
+import useFlash from '@/hooks/use_flash'
+import { Box, Container, Stack, Text } from '@chakra-ui/react'
 
 interface AuthLayoutProps {
-  children: JSX.Element
-  subtitle?: JSX.Element
+  title: React.ReactNode
+  subtitle?: React.ReactNode
+  children: React.ReactNode
 }
 
-export default function AuthLayout({ children, subtitle }: AuthLayoutProps) {
-  return (
-    <>
-      <Toaster />
-      <div id="page-container" className="mx-auto flex min-h-dvh w-full min-w-[320px] flex-col">
-        <main id="page-content" className="flex max-w-full flex-auto flex-col">
-          <div className="relative mx-auto flex min-h-dvh w-full max-w-8xl justify-center overflow-hidden p-4 lg:p-8">
-            <section className="w-full max-w-lg py-6">
-              <header className="mb-10 text-center">
-                <h1 className="mb-2 inline-flex items-center space-x-2 text-2xl font-bold">
-                  Modèle
-                </h1>
-                {subtitle}
-              </header>
+export default function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
+  Toaster()
 
-              <div className="flex flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow">
-                <div className="grow p-5 md:px-16 md:py-12">{children}</div>
-              </div>
-            </section>
-          </div>
-        </main>
-      </div>
-    </>
+  const { emailSent, codeValidated } = useFlash<{ emailSent: boolean; codeValidated: boolean }>()
+  {
+    !emailSent &&
+      !codeValidated &&
+      'Digite seu e-mail para receber um link de recuperação de senha.'
+  }
+  {
+    emailSent && 'Um e-mail com um código de confirmação foi enviado. Digite-o abaixo'
+  }
+  {
+    codeValidated && 'Último passo, escolha uma nova senha'
+  }
+
+  return (
+    <Container maxW="lg" py={{ base: '12', md: '24' }} px={{ base: '0', sm: '8' }}>
+      <Stack spacing="8">
+        <Stack spacing="6">
+          <Logo />
+          <Stack spacing={{ base: '2', md: '3' }} textAlign="center">
+            {title}
+            {subtitle}
+
+            {window?.location?.pathname === '/esqueci-minha-senha' && (
+              <>
+                {!emailSent && !codeValidated && (
+                  <Text>Digite seu e-mail para recuperar sua conta</Text>
+                )}
+                {emailSent && <Text>Digite o código enviado para seu e-mail</Text>}
+                {codeValidated && <Text>Último passo, escolha uma nova senha</Text>}
+              </>
+            )}
+          </Stack>
+        </Stack>
+
+        <Box
+          py={{ base: '0', sm: '8' }}
+          px={{ base: '4', sm: '10' }}
+          bg={{ base: 'transparent', sm: 'bg.surface' }}
+          boxShadow={{ base: 'none', sm: 'md' }}
+          borderRadius={{ base: 'none', sm: 'xl' }}
+        >
+          {children}
+        </Box>
+      </Stack>
+    </Container>
   )
 }

@@ -1,40 +1,70 @@
-import { Button } from '@/components/button'
-import { cn } from '@/lib/utils'
-import { Link } from '@inertiajs/react'
+import useUser from '@/hooks/use_user'
+import { Button, Select, Stack } from '@chakra-ui/react'
+import { Link, router } from '@inertiajs/react'
+import { LuLaptop2, LuLock, LuShield, LuUser } from 'react-icons/lu'
 
-interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
-  items: {
-    icon: JSX.Element
-    href: string
-    title: string
-  }[]
-}
+const items = [
+  {
+    icon: <LuUser className="text-lg" />,
+    title: 'Perfil',
+    href: '/configuracoes/perfil',
+  },
+  {
+    icon: <LuLock className="text-lg" />,
+    title: 'Segurança',
+    href: '/configuracoes/seguranca',
+  },
+  {
+    icon: <LuLaptop2 className="text-lg" />,
+    title: 'Sessões',
+    href: '/configuracoes/sessoes',
+  },
+]
 
-export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
+export function SidebarNav() {
   const { pathname } = window.location
+  const { isAdmin } = useUser()!
 
   return (
-    <nav
-      className={cn('flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1', className)}
-      {...props}
-    >
-      {items.map((item) => (
-        <Button asChild variant="ghost">
-          <Link
+    <>
+      <Select
+        display={{ base: 'block', md: 'none' }}
+        onChange={(e) => router.visit(e.target.value)}
+      >
+        {items.map((item) => (
+          <option value={item.href} selected={pathname.startsWith(item.href)}>
+            {item.title}
+          </option>
+        ))}
+      </Select>
+      <Stack as="nav" minW="160px" maxW="160px" display={{ base: 'none', md: 'flex' }}>
+        {items.map((item) => (
+          <Button
+            w="full"
+            justifyContent="flex-start"
             key={item.href}
             href={item.href}
-            className={cn(
-              '!justify-start gap-2',
-              pathname === item.href
-                ? 'bg-muted hover:bg-muted'
-                : 'hover:bg-transparent hover:underline'
-            )}
+            as={Link}
+            variant={pathname.startsWith(item.href) ? 'solid' : 'ghost'}
+            leftIcon={item.icon}
           >
-            {item.icon}
             {item.title}
-          </Link>
-        </Button>
-      ))}
-    </nav>
+          </Button>
+        ))}
+
+        {isAdmin && (
+          <Button
+            w="full"
+            justifyContent="flex-start"
+            href="/admin"
+            as={Link}
+            variant="ghost"
+            leftIcon={<LuShield />}
+          >
+            Admin
+          </Button>
+        )}
+      </Stack>
+    </>
   )
 }

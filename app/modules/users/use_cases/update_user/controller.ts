@@ -4,7 +4,6 @@ import { confirmEmailUpdateValidator, updateUserValidator } from './validator.js
 import Code from '../../../../shared/models/code.js'
 import db from '@adonisjs/lucid/services/db'
 import CodeTypes from '../../../../shared/enums/code_types.js'
-import { DateTime } from 'luxon'
 
 export default class UpdateUserController {
   async view({ inertia }: HttpContext) {
@@ -34,7 +33,7 @@ export default class UpdateUserController {
 
     if (
       foundCode &&
-      foundCode.metadata?.type === CodeTypes.EMAIL_UPDATE &&
+      foundCode.type === CodeTypes.EMAIL_UPDATE &&
       typeof foundCode.metadata?.desiredEmail === 'string'
     ) {
       user.email = foundCode.metadata.desiredEmail
@@ -68,10 +67,9 @@ export default class UpdateUserController {
     user?.merge({ name })
 
     if (email !== user.email) {
-      const code = await Code.create({
-        userId: user.id,
-        expiresAt: DateTime.now().plus({ minutes: 30 }),
-        metadata: { type: CodeTypes.EMAIL_UPDATE, desiredEmail: email },
+      const code = await user.generateCode({
+        type: CodeTypes.EMAIL_UPDATE,
+        metadata: { desiredEmail: email },
       })
 
       try {
@@ -95,6 +93,8 @@ export default class UpdateUserController {
     }
 
     await user.save()
+
+    session.flash('notifications', [{ type: 'success', message: 'Perfil atualizado!' }])
 
     return response.redirect().back()
   }

@@ -1,18 +1,55 @@
+import { Button, Stack, Text } from '@chakra-ui/react'
 import SettingsLayout from '../layout'
-import ChangePasswordForm from './change_password_form'
+import { ReactNode } from 'react'
+import { useForm } from '@inertiajs/react'
+import FormControl from '@/components/form_control'
 
-const SettingsProfilePage = () => {
+const SecurityPage = () => {
+  const { data, setData, post, processing, reset } = useForm({
+    currentPassword: '',
+    newPassword: '',
+  })
+
   return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-medium">Segurança</h3>
-        <p className="text-sm text-muted-foreground">Gerencie suas configurações de acesso aqui.</p>
-      </div>
-      <ChangePasswordForm />
-    </div>
+    <Stack spacing={6} w="full">
+      <Text color="fg.muted">Gerencie suas configurações de acesso</Text>
+      <Stack
+        spacing={6}
+        as="form"
+        onSubmit={(e) => {
+          e.preventDefault()
+          post('/configuracoes/seguranca', {
+            onSuccess: () => {
+              reset()
+            },
+          })
+        }}
+        className="space-y-8"
+      >
+        <FormControl
+          label="Senha atual"
+          id="currentPassword"
+          type="password"
+          value={data.currentPassword}
+          onChange={(e) => setData('currentPassword', e.target.value)}
+        />
+
+        <FormControl
+          label="Nova senha"
+          id="newPassword"
+          type="password"
+          value={data.newPassword}
+          onChange={(e) => setData('newPassword', e.target.value)}
+        />
+
+        <Button type="submit" isLoading={processing}>
+          Atualizar senha
+        </Button>
+      </Stack>
+    </Stack>
   )
 }
 
-SettingsProfilePage.layout = (page) => <SettingsLayout children={page} />
+SecurityPage.layout = (page: ReactNode) => <SettingsLayout children={page} />
 
-export default SettingsProfilePage
+export default SecurityPage

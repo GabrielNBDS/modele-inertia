@@ -1,5 +1,6 @@
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
+const LogoutController = () => import('./use_cases/logout/controller.js')
 const ForgotPasswordController = () => import('./use_cases/forgot_password/controller.js')
 const LoginController = () => import('./use_cases/login/controller.js')
 const RegisterController = () => import('./use_cases/register/controller.js')
@@ -7,12 +8,7 @@ const RegisterController = () => import('./use_cases/register/controller.js')
 router.get('/entrar', [LoginController, 'view']).middleware(middleware.guest())
 router.post('/login', [LoginController, 'handle'])
 
-router
-  .post('logout', async ({ auth, response }) => {
-    await auth.use('web').logout()
-    return response.redirect('/')
-  })
-  .use(middleware.auth())
+router.post('logout', [LogoutController, 'handle']).use(middleware.auth())
 
 router.get('/cadastrar', [RegisterController, 'view']).middleware(middleware.guest())
 router.post('/register', [RegisterController, 'handle']).middleware(middleware.guest())

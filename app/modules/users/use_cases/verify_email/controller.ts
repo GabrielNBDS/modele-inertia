@@ -19,7 +19,11 @@ export default class VerifyEmailController {
 
     const { code } = await request.validateUsing(verifyEmailValidator)
 
-    const foundCode = await Code.query().where('user_id', user.id).andWhere('value', code).first()
+    const foundCode = await Code.query()
+      .where('userId', user.id)
+      .andWhere('type', CodeTypes.REGISTERED_USER)
+      .andWhere('value', code)
+      .first()
 
     if (!foundCode) {
       session.flash('notifications', [{ type: 'error', message: 'Código incorreto' }])
@@ -31,44 +35,35 @@ export default class VerifyEmailController {
       return response.redirect().back()
     }
 
-    if (foundCode && foundCode.metadata?.type === CodeTypes.REGISTERED_USER) {
-      user.verifiedEmail = true
+    user.verifiedEmail = true
 
-      await db.transaction(async (trx) => {
-        user.useTransaction(trx)
-        foundCode.useTransaction(trx)
+    await db.transaction(async (trx) => {
+      user.useTransaction(trx)
+      foundCode.useTransaction(trx)
 
-        await user.save()
-        await foundCode.delete()
-      })
+      await user.save()
+      await foundCode.delete()
+    })
 
-      session.flash('notifications', [{ type: 'success', message: 'E-mail validado!' }])
+    session.flash('notifications', [{ type: 'success', message: 'E-mail validado!' }])
 
-      return response.redirect('/dashboard')
-    } else {
-      session.flash('notifications', [{ type: 'error', message: 'Erro ao validar e-mail' }])
-      return response.redirect().back()
-    }
+    return response.redirect('/dashboard')
   }
 
   async resend({ auth, session, response }: HttpContext) {
-    console.log('1 -----------')
     try {
       const user = auth.user!
 
-      let code = ''
-      for (let i = 0; i < 6; i++) {
-        code += Math.floor(Math.random() * 10)
-      }
-
-      await user.save()
+      const code = await user.generateCode({
+        type: CodeTypes.REGISTERED_USER,
+      })
 
       await mail.sendLater((message) => {
         message
           .to(user.email)
-          .from('contato@lis-software.com.br')
+          .from('contato@lis-software.com.br', 'Modèle')
           .subject('Verify your email address')
-          .htmlView('mails/verify_email', { code })
+          .htmlView('mails/verify_email', { code: code.value })
       })
 
       session.flash('notifications', [{ type: 'success', message: 'E-mail enviado!' }])

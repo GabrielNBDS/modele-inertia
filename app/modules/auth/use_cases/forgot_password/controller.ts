@@ -6,7 +6,6 @@ import {
 } from './validator.js'
 import Code from '../../../../shared/models/code.js'
 import User from '../../../../shared/models/user.js'
-import { DateTime } from 'luxon'
 import CodeTypes from '../../../../shared/enums/code_types.js'
 import mail from '@adonisjs/mail/services/main'
 import db from '@adonisjs/lucid/services/db'
@@ -32,7 +31,11 @@ export default class ForgotPasswordController {
 
     const user = await User.findByOrFail('email', email)
 
-    const foundCode = await Code.query().where('user_id', user.id).andWhere('value', code).first()
+    const foundCode = await Code.query()
+      .where('userId', user.id)
+      .andWhere('type', CodeTypes.FORGOT_PASSWORD)
+      .andWhere('value', code)
+      .first()
 
     if (!foundCode) {
       session.flash('notifications', [{ type: 'error', message: 'Código incorreto' }])
@@ -79,7 +82,11 @@ export default class ForgotPasswordController {
 
     const user = await User.findByOrFail('email', email)
 
-    const foundCode = await Code.query().where('user_id', user.id).andWhere('value', code).first()
+    const foundCode = await Code.query()
+      .where('userId', user.id)
+      .andWhere('type', CodeTypes.FORGOT_PASSWORD)
+      .andWhere('value', code)
+      .first()
 
     if (!foundCode) {
       session.flash('notifications', [{ type: 'error', message: 'Código incorreto' }])
@@ -110,11 +117,7 @@ export default class ForgotPasswordController {
 
     const user = await User.findByOrFail('email', email)
 
-    const code = await Code.create({
-      userId: user.id,
-      expiresAt: DateTime.now().plus({ minutes: 30 }),
-      metadata: { type: CodeTypes.FORGOT_PASSWORD, desiredEmail: email },
-    })
+    const code = await user.generateCode({ type: CodeTypes.FORGOT_PASSWORD })
 
     try {
       await mail.sendLater((message) => {

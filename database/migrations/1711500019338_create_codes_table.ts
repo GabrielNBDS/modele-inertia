@@ -8,6 +8,7 @@ export default class extends BaseSchema {
       table.uuid('id').primary()
       table.uuid('user_id').references('users.id').onDelete('CASCADE')
       table.string('value')
+      table.integer('type')
       table.json('metadata')
       table.timestamp('expires_at')
 

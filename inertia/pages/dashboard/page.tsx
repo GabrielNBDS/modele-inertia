@@ -1,15 +1,16 @@
 import Header from '@/components/header'
-import DashboardLayout from './layout'
+import Toaster from '@/components/toaster'
+import { Container } from '@chakra-ui/react'
 
 function Dashboard() {
+  Toaster()
+
   return (
     <>
       <Header />
-      <div className="container mx-auto xl:max-w-5xl">Dashboard</div>
+      <Container maxW="3xl">Dashboard</Container>
     </>
   )
 }
-
-Dashboard.layout = (page: JSX.Element) => <DashboardLayout children={page} />
 
 export default Dashboard

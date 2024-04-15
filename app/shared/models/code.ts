@@ -3,6 +3,7 @@ import { BaseModel, beforeCreate, belongsTo, column } from '@adonisjs/lucid/orm'
 import User from './user.js'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import { v4 as uuidv4 } from 'uuid'
+import CodeTypes from '../enums/code_types.js'
 
 export default class Code extends BaseModel {
   static selfAssignPrimaryKey = true
@@ -27,6 +28,9 @@ export default class Code extends BaseModel {
 
   @column()
   declare value: string
+
+  @column()
+  declare type: CodeTypes
 
   @column()
   declare metadata: any

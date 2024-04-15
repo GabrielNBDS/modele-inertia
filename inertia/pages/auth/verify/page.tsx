@@ -1,49 +1,37 @@
-import useUser from '@/hooks/use_user'
 import AuthLayout from '../layout'
-import { Button } from '@/components/button'
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/input_otp'
 import { router, useForm } from '@inertiajs/react'
-import { LoadingButton } from '@/components/loading_button'
+import { Button, HStack, Heading, PinInput, PinInputField, Stack, Text } from '@chakra-ui/react'
 
 function Verify() {
-  const { email } = useUser()!
-
   const { setData, post, processing } = useForm({
     code: '',
   })
 
   return (
-    <div className="text-center mt-4 flex flex-col gap-4">
-      <p>
-        Obrigado por se inscrever! Um código de verificação foi enviado para{' '}
-        <span className="text-primary">{email}</span>, digite-o aqui para verificar seu e-mail.
-      </p>
-
-      <form
+    <Stack spacing={6}>
+      <Stack
+        spacing={6}
+        as="form"
         onSubmit={(e) => {
           e.preventDefault()
           post('/configuracoes/verificar-email')
         }}
       >
-        <InputOTP
-          className="mx-auto max-w-max mb-4"
-          onChange={(e) => setData('code', e)}
-          maxLength={6}
-          render={({ slots }) => (
-            <>
-              <InputOTPGroup>
-                {slots.map((slot, index) => (
-                  <InputOTPSlot key={index} {...slot} />
-                ))}
-              </InputOTPGroup>
-            </>
-          )}
-        />
+        <HStack mx="auto">
+          <PinInput onChange={(e) => setData('code', e)} size="lg">
+            <PinInputField />
+            <PinInputField />
+            <PinInputField />
+            <PinInputField />
+            <PinInputField />
+            <PinInputField />
+          </PinInput>
+        </HStack>
 
-        <LoadingButton loading={processing} className="w-full">
+        <Button type="submit" w="full" isLoading={processing} className="w-full">
           Verificar E-mail
-        </LoadingButton>
-      </form>
+        </Button>
+      </Stack>
 
       <form
         onSubmit={(e) => {
@@ -55,17 +43,23 @@ function Verify() {
           }
         }}
       >
-        <Button type="submit" className="w-full" variant="outline">
+        <Button type="submit" w="full" variant="outline">
           Reenviar e-mail
         </Button>
       </form>
-    </div>
+    </Stack>
   )
 }
 
 Verify.layout = (page: JSX.Element) => (
   <AuthLayout
-    subtitle={<p className="text-muted-foreground">Verifique seu e-mail.</p>}
+    title={<Heading size={{ base: 'xs', md: 'sm' }}>Verifique seu e-mail</Heading>}
+    subtitle={
+      <Text>
+        Obrigado por se inscrever! Um código de verificação foi enviado para seu email, digite-o
+        abaixo.
+      </Text>
+    }
     children={page}
   />
 )
