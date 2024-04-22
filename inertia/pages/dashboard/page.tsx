@@ -1,10 +1,7 @@
 import Header from '@/components/header'
-import Toaster from '@/components/toaster'
 import { Container } from '@chakra-ui/react'
 
 function Dashboard() {
-  Toaster()
-
   return (
     <>
       <Header />

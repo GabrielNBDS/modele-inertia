@@ -36,6 +36,7 @@ export function SidebarNav() {
             {item.title}
           </option>
         ))}
+        {isAdmin && <option value="/admin/dashboard">Admin</option>}
       </Select>
       <Stack as="nav" minW="160px" maxW="160px" display={{ base: 'none', md: 'flex' }}>
         {items.map((item) => (
@@ -56,7 +57,7 @@ export function SidebarNav() {
           <Button
             w="full"
             justifyContent="flex-start"
-            href="/admin"
+            href="/admin/dashboard"
             as={Link}
             variant="ghost"
             leftIcon={<LuShield />}

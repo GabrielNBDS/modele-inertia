@@ -1,7 +1,7 @@
 import useError from '@/hooks/use_error'
 import { FormControl as FC, FormErrorMessage, FormLabel, Input, InputProps } from '@chakra-ui/react'
 
-export default function FormControl({
+export default function FormInput({
   label,
   id,
   className,

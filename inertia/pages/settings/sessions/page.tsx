@@ -1,5 +1,6 @@
 import {
   Button,
+  HStack,
   Icon,
   Stack,
   Table,
@@ -45,11 +46,13 @@ const SessionsPage = ({ sessions }: InferPageProps<SessionsController, 'view'>) 
                 <Td>{session.ipAddress}</Td>
 
                 {session.isCurrentSession ? (
-                  <Td display="flex" gap={2} alignItems="center">
-                    Sessão atual <Icon boxSize={5} color="green" as={LuCheckCircle} />
+                  <Td>
+                    <HStack gap={2} alignItems="center">
+                      Sessão atual <Icon boxSize={5} color="green" as={LuCheckCircle} />
+                    </HStack>
                   </Td>
                 ) : (
-                  <Td display="flex" gap={2} alignItems="center">
+                  <Td gap={2} alignItems="center">
                     {DateTime.fromISO(session.lastActiveAt!).setLocale('pt').toRelative()}{' '}
                     <Link href={`/configuracoes/sessoes/logout/${session.id}`} method="delete">
                       <Icon boxSize={5} color="red" as={LuPower} />

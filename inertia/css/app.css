@@ -1,3 +1,8 @@
 html {
   scroll-behavior: smooth;
 }
+
+#nprogress .bar {
+  z-index: 999999 !important;
+  height: 3px !important;
+}

@@ -14,7 +14,7 @@ export default class LoginController {
 
     try {
       const user = await User.verifyCredentials(email, password)
-      await auth.use('web').login(user, true)
+      await auth.use('web').login(user)
 
       const sessionToken = uuidv4()
 

@@ -5,19 +5,23 @@ import { createInertiaApp } from '@inertiajs/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import { ChakraProvider } from '@chakra-ui/react'
 import { theme } from './theme'
+import AppLayout from './layout'
 
-const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
+const appName = import.meta.env.VITE_APP_NAME || 'Modèle'
 
 createInertiaApp({
   progress: { color: 'var(--chakra-colors-accent)' },
 
   title: (title) => `${title} - ${appName}`,
 
-  resolve: (name) => {
-    return resolvePageComponent(
+  resolve: async (name) => {
+    const page: any = await resolvePageComponent(
       `../pages/${name}/page.tsx`,
       import.meta.glob('../pages/**/page.tsx')
     )
+
+    page.default.layout ??= (p: any) => <AppLayout children={p} />
+    return page
   },
 
   setup({ el, App, props }) {

@@ -1,17 +1,15 @@
 import Header from '@/components/header'
-import Toaster from '@/components/toaster'
 import { Container, Stack } from '@chakra-ui/react'
 import { SidebarNav } from './sidebar_nav'
+import AppLayout from '@/app/layout'
 
 interface SettingsLayoutProps {
   children: React.ReactNode
 }
 
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
-  Toaster()
-
   return (
-    <>
+    <AppLayout>
       <Header />
 
       <Container maxW="4xl" py={8} px={{ base: '0', sm: '8' }}>
@@ -30,6 +28,6 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           {children}
         </Stack>
       </Container>
-    </>
+    </AppLayout>
   )
 }

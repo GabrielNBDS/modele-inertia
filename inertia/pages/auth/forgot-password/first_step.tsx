@@ -1,4 +1,4 @@
-import FormControl from '@/components/form_control'
+import FormInput from '@/components/form_input'
 import { Button, Stack } from '@chakra-ui/react'
 import { useForm } from '@inertiajs/react'
 
@@ -16,7 +16,7 @@ export default function ForgotPasswordFirstStep() {
         post('/esqueci-minha-senha')
       }}
     >
-      <FormControl
+      <FormInput
         label="E-mail"
         id="email"
         type="email"

@@ -16,7 +16,7 @@ import {
   VisuallyHidden,
 } from '@chakra-ui/react'
 import { FcGoogle } from 'react-icons/fc'
-import FormControl from '@/components/form_control'
+import FormInput from '@/components/form_input'
 
 export const OAuthButtonGroup = () => (
   <ButtonGroup variant="secondary" spacing="4">
@@ -46,14 +46,14 @@ function Login() {
       }}
     >
       <Stack spacing="5">
-        <FormControl
+        <FormInput
           label="E-mail"
           id="email"
           type="email"
           value={data.email}
           onChange={(e) => setData('email', e.target.value)}
         />
-        <FormControl
+        <FormInput
           label="Senha"
           id="password"
           type="password"

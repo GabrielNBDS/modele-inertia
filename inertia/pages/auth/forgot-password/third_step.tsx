@@ -1,4 +1,4 @@
-import FormControl from '@/components/form_control'
+import FormInput from '@/components/form_input'
 import useFlash from '@/hooks/use_flash'
 import { Button, Stack } from '@chakra-ui/react'
 import { useForm } from '@inertiajs/react'
@@ -22,7 +22,7 @@ export default function ForgotPasswordThirdStep() {
         post('/esqueci-minha-senha/trocar-senha')
       }}
     >
-      <FormControl
+      <FormInput
         label="Nova Senha"
         id="password"
         type="password"

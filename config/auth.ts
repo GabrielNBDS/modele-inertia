@@ -6,8 +6,7 @@ const authConfig = defineConfig({
   default: 'web',
   guards: {
     web: sessionGuard({
-      useRememberMeTokens: true,
-      rememberMeTokensAge: '2 years',
+      useRememberMeTokens: false,
       provider: sessionUserProvider({
         model: () => import('../app/shared/models/user.js'),
       }),

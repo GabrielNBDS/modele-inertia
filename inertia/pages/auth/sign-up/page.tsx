@@ -1,7 +1,7 @@
 import AuthLayout from '../layout'
 import { Link, useForm } from '@inertiajs/react'
 import { Button, Divider, HStack, Heading, Stack, Text } from '@chakra-ui/react'
-import FormControl from '@/components/form_control'
+import FormInput from '@/components/form_input'
 import { OAuthButtonGroup } from '../login/page'
 
 function SignUp() {
@@ -21,7 +21,7 @@ function SignUp() {
       }}
     >
       <Stack spacing="5">
-        <FormControl
+        <FormInput
           label="Nome"
           id="name"
           type="name"
@@ -29,7 +29,7 @@ function SignUp() {
           onChange={(e) => setData('name', e.target.value)}
         />
 
-        <FormControl
+        <FormInput
           label="E-mail"
           id="email"
           type="email"
@@ -37,7 +37,7 @@ function SignUp() {
           onChange={(e) => setData('email', e.target.value)}
         />
 
-        <FormControl
+        <FormInput
           label="Senha"
           id="password"
           type="password"

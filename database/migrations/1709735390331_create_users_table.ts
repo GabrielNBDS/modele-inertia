@@ -14,8 +14,13 @@ export default class extends BaseSchema {
       table.string('email', 254).unique()
       table.string('password')
       table.boolean('verified_email').defaultTo(false)
-
-      table.integer('role_id').unsigned().references('id').inTable('roles')
+      table
+        .integer('role_id')
+        .unsigned()
+        .references('id')
+        .inTable('roles')
+        .notNullable()
+        .defaultTo(Roles.USER)
 
       table.timestamp('created_at')
       table.timestamp('updated_at').nullable()

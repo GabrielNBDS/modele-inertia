@@ -2,7 +2,7 @@ import { Button, Stack, Text } from '@chakra-ui/react'
 import SettingsLayout from '../layout'
 import { ReactNode } from 'react'
 import { useForm } from '@inertiajs/react'
-import FormControl from '@/components/form_control'
+import FormInput from '@/components/form_input'
 
 const SecurityPage = () => {
   const { data, setData, post, processing, reset } = useForm({
@@ -26,7 +26,7 @@ const SecurityPage = () => {
         }}
         className="space-y-8"
       >
-        <FormControl
+        <FormInput
           label="Senha atual"
           id="currentPassword"
           type="password"
@@ -34,7 +34,7 @@ const SecurityPage = () => {
           onChange={(e) => setData('currentPassword', e.target.value)}
         />
 
-        <FormControl
+        <FormInput
           label="Nova senha"
           id="newPassword"
           type="password"

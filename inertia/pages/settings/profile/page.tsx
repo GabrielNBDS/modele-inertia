@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import SettingsLayout from '../layout'
 import { ReactNode } from 'react'
-import FormControl from '@/components/form_control'
+import FormInput from '@/components/form_input'
 import useUser from '@/hooks/use_user'
 import useFlash from '@/hooks/use_flash'
 import { useForm } from '@inertiajs/react'
@@ -59,13 +59,13 @@ const ProfilePage = () => {
         }}
         spacing={6}
       >
-        <FormControl
+        <FormInput
           label="Nome"
           id="name"
           value={data.name}
           onChange={(e) => setData('name', e.target.value)}
         />
-        <FormControl
+        <FormInput
           label="E-mail"
           id="email"
           type="email"
