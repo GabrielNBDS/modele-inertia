@@ -3,6 +3,7 @@ import { Link, useForm } from '@inertiajs/react'
 import { Button, Divider, HStack, Heading, Stack, Text } from '@chakra-ui/react'
 import FormInput from '@/components/form_input'
 import { OAuthButtonGroup } from '../login/page'
+import SEO from '@/components/seo'
 
 function SignUp() {
   const { data, setData, post, processing } = useForm({
@@ -76,7 +77,12 @@ SignUp.layout = (page: JSX.Element) => (
         </Text>
       </>
     }
-    children={page}
+    children={
+      <>
+        <SEO title="Crie sua conta" />
+        {page}
+      </>
+    }
   />
 )
 

@@ -1,6 +1,7 @@
 import AuthLayout from '../layout'
 import { router, useForm } from '@inertiajs/react'
 import { Button, HStack, Heading, PinInput, PinInputField, Stack, Text } from '@chakra-ui/react'
+import SEO from '@/components/seo'
 
 function Verify() {
   const { setData, post, processing } = useForm({
@@ -60,7 +61,12 @@ Verify.layout = (page: JSX.Element) => (
         abaixo.
       </Text>
     }
-    children={page}
+    children={
+      <>
+        <SEO title="Verifique seu e-mail" />
+        {page}
+      </>
+    }
   />
 )
 

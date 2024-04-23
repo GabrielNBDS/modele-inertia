@@ -16,6 +16,7 @@ import {
 import { Link } from '@inertiajs/react'
 import { LuPenLine } from 'react-icons/lu'
 import roles from '@/utils/roles'
+import SEO from '@/components/seo'
 
 function ReadUserPage({ user }: InferPageProps<AdminUsersController, 'read'>) {
   return (
@@ -30,6 +31,7 @@ function ReadUserPage({ user }: InferPageProps<AdminUsersController, 'read'>) {
         <Stack>
           <HStack justify="space-between">
             <HStack>
+              <SEO title={`"${user.name}"`} />
               <Heading size={{ base: 'xs', md: 'sm' }}>{user.name}</Heading>
               <Badge>{roles.find((e) => e.value === user.roleId)?.label}</Badge>
             </HStack>

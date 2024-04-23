@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react'
 import { FcGoogle } from 'react-icons/fc'
 import FormInput from '@/components/form_input'
+import SEO from '@/components/seo'
 
 export const OAuthButtonGroup = () => (
   <ButtonGroup variant="secondary" spacing="4">
@@ -104,7 +105,12 @@ Login.layout = (page: JSX.Element) => (
         </Text>
       </>
     }
-    children={page}
+    children={
+      <>
+        <SEO title="Fazer login" />
+        {page}
+      </>
+    }
   />
 )
 

@@ -19,6 +19,7 @@ import useUser from '@/hooks/use_user'
 import useFlash from '@/hooks/use_flash'
 import { useForm } from '@inertiajs/react'
 import { LuMoon, LuSun } from 'react-icons/lu'
+import SEO from '@/components/seo'
 
 const ProfilePage = () => {
   const { emailChanged } = useFlash<{ emailChanged?: boolean }>()
@@ -119,6 +120,15 @@ const ProfilePage = () => {
   )
 }
 
-ProfilePage.layout = (page: ReactNode) => <SettingsLayout children={page} />
+ProfilePage.layout = (page: ReactNode) => (
+  <SettingsLayout
+    children={
+      <>
+        <SEO title="Seu perfil" />
+        {page}
+      </>
+    }
+  />
+)
 
 export default ProfilePage

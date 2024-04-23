@@ -5,6 +5,7 @@ import { InferPageProps } from '@adonisjs/inertia/types'
 import AdminUsersController from '~/app/modules/admin/use_cases/users/controller'
 import Pagination from '@/components/pagination'
 import { router } from '@inertiajs/react'
+import SEO from '@/components/seo'
 
 function UsersPage({ users }: InferPageProps<AdminUsersController, 'index'>) {
   return (
@@ -45,6 +46,15 @@ function UsersPage({ users }: InferPageProps<AdminUsersController, 'index'>) {
   )
 }
 
-UsersPage.layout = (page: ReactNode) => <AdminLayout children={page} />
+UsersPage.layout = (page: ReactNode) => (
+  <AdminLayout
+    children={
+      <>
+        <SEO title="Visualizar usuários" />
+        {page}
+      </>
+    }
+  />
+)
 
 export default UsersPage

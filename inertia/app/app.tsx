@@ -7,12 +7,8 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { theme } from './theme'
 import AppLayout from './layout'
 
-const appName = import.meta.env.VITE_APP_NAME || 'Modèle'
-
 createInertiaApp({
   progress: { color: 'var(--chakra-colors-accent)' },
-
-  title: (title) => `${title} - ${appName}`,
 
   resolve: async (name) => {
     const page: any = await resolvePageComponent(

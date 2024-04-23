@@ -21,6 +21,7 @@ import type SessionsController from '../../../../app/modules/users/use_cases/ses
 import { DateTime } from 'luxon'
 import { LuCheckCircle, LuLogOut, LuPower } from 'react-icons/lu'
 import { Link } from '@inertiajs/react'
+import SEO from '@/components/seo'
 
 const SessionsPage = ({ sessions }: InferPageProps<SessionsController, 'view'>) => {
   return (
@@ -81,6 +82,15 @@ const SessionsPage = ({ sessions }: InferPageProps<SessionsController, 'view'>) 
   )
 }
 
-SessionsPage.layout = (page: ReactNode) => <SettingsLayout children={page} />
+SessionsPage.layout = (page: ReactNode) => (
+  <SettingsLayout
+    children={
+      <>
+        <SEO title="Suas sessões" />
+        {page}
+      </>
+    }
+  />
+)
 
 export default SessionsPage

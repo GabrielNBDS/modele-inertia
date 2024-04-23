@@ -7,6 +7,7 @@ import FormInput from '@/components/form_input'
 import { useForm } from '@inertiajs/react'
 import FormSelect from '@/components/form_select'
 import roles from '@/utils/roles'
+import SEO from '@/components/seo'
 
 function ReadUserPage({ user }: InferPageProps<AdminUsersController, 'read'>) {
   const { data, setData, put, processing } = useForm({
@@ -25,6 +26,7 @@ function ReadUserPage({ user }: InferPageProps<AdminUsersController, 'read'>) {
       borderRadius={{ base: 'none', sm: 'xl' }}
     >
       <Container maxW="2xl">
+        <SEO title={`Editar "${user.name}"`} />
         <Heading mb={6} size={{ base: 'xs', md: 'sm' }}>
           Editar "{user.name}"
         </Heading>

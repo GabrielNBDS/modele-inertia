@@ -3,6 +3,7 @@ import SettingsLayout from '../layout'
 import { ReactNode } from 'react'
 import { useForm } from '@inertiajs/react'
 import FormInput from '@/components/form_input'
+import SEO from '@/components/seo'
 
 const SecurityPage = () => {
   const { data, setData, post, processing, reset } = useForm({
@@ -50,6 +51,15 @@ const SecurityPage = () => {
   )
 }
 
-SecurityPage.layout = (page: ReactNode) => <SettingsLayout children={page} />
+SecurityPage.layout = (page: ReactNode) => (
+  <SettingsLayout
+    children={
+      <>
+        <SEO title="Configurações de acesso" />
+        {page}
+      </>
+    }
+  />
+)
 
 export default SecurityPage
