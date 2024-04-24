@@ -4,12 +4,12 @@ import { useEffect } from 'react'
 
 export default function Toaster() {
   const toast = useToast()
-  const { notifications } = useFlash<{
+  const flash = useFlash<{
     notifications?: { type: 'success' | 'error' | 'info' | 'warning'; message: string }[]
   }>()
 
   useEffect(() => {
-    notifications?.forEach(({ message, type }) => {
+    flash?.notifications?.forEach(({ message, type }) => {
       toast({
         title: message,
         status: type,
@@ -17,5 +17,5 @@ export default function Toaster() {
         duration: 3000,
       })
     })
-  }, [notifications])
+  }, [flash?.notifications])
 }

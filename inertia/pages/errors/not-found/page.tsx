@@ -1,11 +1,31 @@
+import { Logo } from '@/components/logo'
+import { Box, Container, HStack, Heading, Text } from '@chakra-ui/react'
+import { Head, Link } from '@inertiajs/react'
+
 export default function NotFound() {
   return (
     <>
-      <div className="container">
-        <div className="title">Page not found</div>
-
-        <span>This page does not exist.</span>
-      </div>
+      <Head>
+        <title>Página não encontrada (404) | Modèle</title>
+      </Head>
+      <Container px={4} py={32} maxW="3xl">
+        <Box w="full" maxW="60ch" mx="auto">
+          <HStack>
+            <Logo h={8} />
+            <Heading size="xs">Modèle</Heading>
+          </HStack>
+          <Heading mt={5} mb={3} size="xs">
+            Página não encontrada (404)
+          </Heading>
+          <Text mb={3} color="fg.muted">
+            A página que você procura foi movida ou não existe mais. Volte para a página inicial{' '}
+            <Text decoration="underline" as={Link} href="/">
+              clicando aqui
+            </Text>
+            .
+          </Text>
+        </Box>
+      </Container>
     </>
   )
 }
