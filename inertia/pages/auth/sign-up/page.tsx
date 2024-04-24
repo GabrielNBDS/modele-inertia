@@ -1,8 +1,7 @@
 import AuthLayout from '../layout'
 import { Link, useForm } from '@inertiajs/react'
-import { Button, Divider, HStack, Heading, Stack, Text } from '@chakra-ui/react'
+import { Button, Heading, Stack, Text } from '@chakra-ui/react'
 import FormInput from '@/components/form_input'
-import { OAuthButtonGroup } from '../login/page'
 import SEO from '@/components/seo'
 
 function SignUp() {
@@ -51,14 +50,6 @@ function SignUp() {
         <Button isLoading={processing} type="submit">
           Cadastrar
         </Button>
-        <HStack>
-          <Divider />
-          <Text textStyle="sm" whiteSpace="nowrap" color="fg.muted">
-            Ou cadastre-se com
-          </Text>
-          <Divider />
-        </HStack>
-        <OAuthButtonGroup />
       </Stack>
     </Stack>
   )

@@ -7,26 +7,12 @@ import {
   AlertIcon,
   AlertTitle,
   Button,
-  ButtonGroup,
-  Divider,
-  HStack,
   Heading,
   Stack,
   Text,
-  VisuallyHidden,
 } from '@chakra-ui/react'
-import { FcGoogle } from 'react-icons/fc'
 import FormInput from '@/components/form_input'
 import SEO from '@/components/seo'
-
-export const OAuthButtonGroup = () => (
-  <ButtonGroup variant="secondary" spacing="4">
-    <Button flexGrow={1}>
-      <VisuallyHidden>Entrar com Google</VisuallyHidden>
-      <FcGoogle />
-    </Button>
-  </ButtonGroup>
-)
 
 function Login() {
   const error = useError('auth')
@@ -59,6 +45,11 @@ function Login() {
           id="password"
           type="password"
           value={data.password}
+          rightElement={
+            <Button as={Link} href="/esqueci-minha-senha" variant="text" size="xs">
+              Esqueceu sua senha?
+            </Button>
+          }
           onChange={(e) => setData('password', e.target.value)}
         />
       </Stack>
@@ -74,18 +65,6 @@ function Login() {
       <Stack spacing="6">
         <Button isLoading={processing} type="submit">
           Entrar
-        </Button>
-        <HStack>
-          <Divider />
-          <Text textStyle="sm" whiteSpace="nowrap" color="fg.muted">
-            Ou continue com
-          </Text>
-          <Divider />
-        </HStack>
-        <OAuthButtonGroup />
-
-        <Button as={Link} href="/esqueci-minha-senha" variant="text" size="sm" mx="auto">
-          Esqueceu sua senha?
         </Button>
       </Stack>
     </Stack>
