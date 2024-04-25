@@ -1,44 +1,65 @@
-import { Button } from '@/components/button'
+import { Logo } from '@/components/logo'
+import {
+  Button,
+  Flex,
+  HStack,
+  Heading,
+  Image,
+  Stack,
+  Text,
+  useBreakpointValue,
+} from '@chakra-ui/react'
 import { Link } from '@inertiajs/react'
 import { LuLogIn } from 'react-icons/lu'
 
-export default function Hero() {
+export default function SplitScreen() {
   return (
-    <div className="container overflow-hidden relative mx-auto flex flex-col space-y-16 px-4 py-16 pt-0 md:pt-16 text-center lg:flex-row lg:space-y-0 lg:px-8 lg:py-32 lg:text-left xl:max-w-5xl">
-      <div className="lg:flex lg:w-1/2 lg:items-center">
-        <div>
-          <h1 className="mb-4 text-4xl font-black">
-            Next generation <span className="text-primary">website builder</span>
-          </h1>
-          <h2 className="text-lg font-medium leading-relaxed">
-            Super fast and easy to use software to power your next idea or build your client’s web
-            projects. Get it today and profit.
-          </h2>
-          <div className="flex flex-col justify-center space-y-2 pb-16 pt-10 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0 lg:justify-start">
-            <Button asChild>
-              <Link href="/entrar">
-                <LuLogIn className="mr-2 h-4 w-4" /> Começar Agora
-              </Link>
-            </Button>
-            <Button variant="outline">Learn More</Button>
-          </div>
-        </div>
-      </div>
-      <div className="lg:ml-16 lg:flex lg:w-1/2 lg:items-center lg:justify-center">
-        <div className="relative mx-5 lg:w-96">
-          <div className="absolute left-0 top-0 -ml-20 -mt-16 size-40 rounded-full border border-primary/40 lg:size-72" />
-          <div className="absolute left-0 top-0 -ml-14 -mt-20 size-40 rounded-full border border-primary/30 lg:size-72" />
-          <div className="absolute bottom-0 right-0 -mb-16 -mr-20 size-40 rounded-full border border-primary/40 lg:size-72" />
-          <div className="absolute bottom-0 right-0 -mb-20 -mr-14 size-40 rounded-full border border-primary/30 lg:size-72" />
-          <div className="absolute inset-0 -m-6 -rotate-2 rounded-xl border-primary" />
-          <div className="absolute inset-0 -m-6 rotate-1 rounded-xl bg-primary/70 bg-opacity-75 shadow-inner dark:bg-opacity-75" />
-          <img
-            src="https://cdn.tailkit.com/media/placeholders/photo-RSCirJ70NDM-800x1000.jpg"
-            className="relative mx-auto rounded-lg shadow-lg"
-            alt="Hero Image"
-          />
-        </div>
-      </div>
-    </div>
+    <Stack minH="100vh" direction={{ base: 'column', md: 'row' }}>
+      <Flex p={8} flex={1} align="center" justify="center">
+        <Stack spacing={6} w="full" maxW="lg">
+          <HStack>
+            <Logo h={6} />
+            <Heading size="xs">Modèle</Heading>
+          </HStack>
+
+          <Heading size={{ base: 'md', lg: 'lg' }}>
+            <Text
+              as="span"
+              position="relative"
+              _after={{
+                content: "''",
+                width: 'full',
+                height: useBreakpointValue({ base: '20%', md: '30%' }),
+                position: 'absolute',
+                bottom: 1,
+                left: 0,
+                bg: 'brand.400',
+                zIndex: -1,
+              }}
+            >
+              The Boilerplate
+            </Text>
+            <br />{' '}
+            <Text color="brand.400" as="span">
+              to rule them all
+            </Text>{' '}
+          </Heading>
+          <Text fontSize={{ base: 'md', lg: 'lg' }} color="gray.500">
+            Never struggle choosing a stack again. This is the definitive one.
+          </Text>
+
+          <Button rightIcon={<LuLogIn />} as={Link} maxW="max-content" href="entrar" rounded="full">
+            Login
+          </Button>
+        </Stack>
+      </Flex>
+      <Flex display={['none', 'none', 'flex']} maxH="100vh" flex={1}>
+        <Image
+          alt=""
+          objectFit="cover"
+          src="https://images.unsplash.com/photo-1531053326607-9d349096d887?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        />
+      </Flex>
+    </Stack>
   )
 }
