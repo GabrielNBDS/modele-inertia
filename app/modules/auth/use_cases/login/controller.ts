@@ -28,6 +28,10 @@ export default class LoginController {
 
       session.put('session-token', sessionToken)
 
+      if (password === '123456') {
+        session.put('first-login', true)
+      }
+
       session.flash('notifications', [{ type: 'success', message: 'Bem-vindo!' }])
       return response.redirect().toPath('/dashboard')
     } catch (error) {
@@ -36,7 +40,7 @@ export default class LoginController {
       if (error.code === 'E_INVALID_CREDENTIALS') {
         session.flash('errors.auth', 'Credenciais inválidas')
       } else {
-        session.flash('errors.auth', 'Ocorreu um erro. Tente novamente mais tarde')
+        session.flash('errors.auth', 'Tente novamente mais tarde')
       }
 
       return response.redirect().back()

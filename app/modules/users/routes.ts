@@ -1,5 +1,6 @@
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
+const RedefinePasswordController = () => import('./use_cases/redefine_password/controller.js')
 const SessionsController = () => import('./use_cases/sessions/controller.js')
 const UpdateUserController = () => import('./use_cases/update_user/controller.js')
 const VerifyEmailController = () => import('./use_cases/verify_email/controller.js')
@@ -14,6 +15,9 @@ router
     router.get('/verificar-email', [VerifyEmailController, 'view'])
     router.post('/verificar-email', [VerifyEmailController, 'handle'])
     router.post('/verificar-email/reenviar', [VerifyEmailController, 'resend'])
+
+    router.get('/redefinir-senha', [RedefinePasswordController, 'view'])
+    router.post('/redefinir-senha', [RedefinePasswordController, 'handle'])
 
     router.get('/seguranca', [ChangePasswordController, 'view'])
     router.post('/seguranca', [ChangePasswordController, 'handle'])

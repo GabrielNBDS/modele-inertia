@@ -1,6 +1,6 @@
 import { HttpContext } from '@adonisjs/core/http'
 import User from '../../../../shared/models/user.js'
-import { updateUserValidator } from './validator.js'
+import { createUserValidator, updateUserValidator } from './validator.js'
 
 export default class AdminUsersController {
   async index({ inertia, request }: HttpContext) {
@@ -21,6 +21,20 @@ export default class AdminUsersController {
     const user = await User.findOrFail(id)
 
     return inertia.render('admin/users/read', { user: user })
+  }
+
+  async create({ inertia }: HttpContext) {
+    return inertia.render('admin/users/create')
+  }
+
+  async store({ session, request, response }: HttpContext) {
+    const payload = await request.validateUsing(createUserValidator)
+
+    const user = await User.create({ ...payload, password: '123456' })
+
+    session.flash('notifications', [{ type: 'success', message: 'Usuário criado!' }])
+
+    return response.redirect(`/admin/usuarios/${user.id}`)
   }
 
   async edit({ inertia, request }: HttpContext) {

@@ -1,7 +1,8 @@
 import AuthLayout from '../layout'
-import { router, useForm } from '@inertiajs/react'
+import { Link, useForm } from '@inertiajs/react'
 import { Button, HStack, Heading, PinInput, PinInputField, Stack, Text } from '@chakra-ui/react'
 import SEO from '@/components/seo'
+import { LuLogOut } from 'react-icons/lu'
 
 function Verify() {
   const { setData, post, processing } = useForm({
@@ -34,20 +35,28 @@ function Verify() {
         </Button>
       </Stack>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          try {
-            router.post('/configuracoes/verificar-email/reenviar')
-          } catch (error) {
-            console.log(error)
-          }
-        }}
+      <Button
+        as={Link}
+        href="/configuracoes/verificar-email/reenviar"
+        type="submit"
+        w="full"
+        variant="outline"
+        method="post"
       >
-        <Button type="submit" w="full" variant="outline">
-          Reenviar e-mail
-        </Button>
-      </form>
+        Reenviar e-mail
+      </Button>
+
+      <Button
+        as={Link}
+        href="/logout"
+        method="post"
+        colorScheme="red"
+        variant="link"
+        w="full"
+        leftIcon={<LuLogOut />}
+      >
+        Sair da sessão atual
+      </Button>
     </Stack>
   )
 }

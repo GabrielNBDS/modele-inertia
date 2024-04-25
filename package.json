@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node bin/server.js",
     "build": "node ace build",
-    "dev": "node ace serve --hmr",
+    "dev": "node ace serve --watch",
     "test": "node ace test",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -48,7 +48,6 @@
     "@types/uuid": "^9.0.8",
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.57.0",
-    "hot-hook": "^0.2.1",
     "pino-pretty": "^10.3.1",
     "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
@@ -56,7 +55,7 @@
     "vite": "^5.1.5"
   },
   "dependencies": {
-    "@adonisjs/auth": "^9.1.1",
+    "@adonisjs/auth": "^9.2.0",
     "@adonisjs/core": "^6.8.0",
     "@adonisjs/cors": "^2.2.1",
     "@adonisjs/inertia": "^1.0.0-25",
@@ -92,9 +91,8 @@
   "prettier": "@adonisjs/prettier-config",
   "hotHook": {
     "boundaries": [
-      "./app/**/*.ts",
-      "./inertia/**/*.ts",
-      "./inertia/**/*.tsx"
+      "./app/**/controller.ts",
+      "./app/shared/middleware/**/*.ts"
     ]
   }
 }

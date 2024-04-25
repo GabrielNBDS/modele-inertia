@@ -1,15 +1,19 @@
 import { ReactNode } from 'react'
 import AdminLayout from '../layout'
-import { Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
+import { Button, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import { InferPageProps } from '@adonisjs/inertia/types'
 import AdminUsersController from '~/app/modules/admin/use_cases/users/controller'
 import Pagination from '@/components/pagination'
-import { router } from '@inertiajs/react'
+import { Link, router } from '@inertiajs/react'
 import SEO from '@/components/seo'
+import { LuPlus } from 'react-icons/lu'
 
 function UsersPage({ users }: InferPageProps<AdminUsersController, 'index'>) {
   return (
     <>
+      <Button as={Link} href="/admin/usuarios/novo-usuario" rightIcon={<LuPlus />} mb={4} ml="auto">
+        Criar usuário
+      </Button>
       <TableContainer
         border="1px"
         borderColor="gray.100"

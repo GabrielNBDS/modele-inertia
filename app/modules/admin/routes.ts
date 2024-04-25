@@ -7,6 +7,8 @@ const AdminDashboardController = () => import('./use_cases/dashboard/controller.
 router
   .group(() => {
     router.get('/dashboard', [AdminDashboardController, 'view'])
+    router.get('/usuarios/novo-usuario', [AdminUsersController, 'create'])
+    router.post('/usuarios/novo-usuario', [AdminUsersController, 'store'])
     router.get('/usuarios', [AdminUsersController, 'index'])
     router.get('/usuarios/:id', [AdminUsersController, 'read'])
     router.get('/usuarios/:id/editar', [AdminUsersController, 'edit'])

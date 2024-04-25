@@ -27,10 +27,21 @@ export default class AuthMiddleware {
       return ctx.response.unauthorized('Unauthorized access')
     }
 
+    if (ctx.session.get('first-login') === true) {
+      if (
+        ctx.request.url() !== '/configuracoes/redefinir-senha' &&
+        ctx.request.url() !== '/logout'
+      ) {
+        return ctx.response.redirect('/configuracoes/redefinir-senha')
+      }
+    }
+
     if (!user.verifiedEmail) {
       if (
         ctx.request.url() !== '/configuracoes/verificar-email' &&
-        ctx.request.url() !== '/configuracoes/verificar-email/reenviar'
+        ctx.request.url() !== '/configuracoes/verificar-email/reenviar' &&
+        ctx.request.url() !== '/configuracoes/redefinir-senha' &&
+        ctx.request.url() !== '/logout'
       ) {
         return ctx.response.redirect('/configuracoes/verificar-email')
       }
