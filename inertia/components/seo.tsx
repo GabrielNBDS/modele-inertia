@@ -1,5 +1,6 @@
 import { Head } from '@inertiajs/react'
 import React from 'react'
+import modele from '~/config/modele'
 
 interface SEOProps {
   title: string
@@ -11,7 +12,7 @@ interface SEOProps {
   shouldIndexPage?: boolean
 }
 
-const appName = import.meta.env.VITE_APP_NAME || 'Modèle'
+const appName = import.meta.env.VITE_APP_NAME || modele.appName
 
 const SEO: React.FC<SEOProps> = ({
   title,

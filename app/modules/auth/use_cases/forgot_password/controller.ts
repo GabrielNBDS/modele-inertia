@@ -9,6 +9,7 @@ import User from '../../../../shared/models/user.js'
 import CodeTypes from '../../../../shared/enums/code_types.js'
 import mail from '@adonisjs/mail/services/main'
 import db from '@adonisjs/lucid/services/db'
+import modele from '#config/modele'
 
 export default class ForgotPasswordController {
   async view({ inertia }: HttpContext) {
@@ -123,9 +124,9 @@ export default class ForgotPasswordController {
       await mail.sendLater((message) => {
         message
           .to(email)
-          .from('contato@lis-software.com.br', 'Modèle')
+          .from(modele.mail.from, modele.mail.name)
           .subject('Troca de senha')
-          .htmlView('mails/reset_password', { code: code.value })
+          .htmlView('mails/reset_password', { code: code.value, appName: modele.appName })
       })
 
       session.flash('notifications', [{ type: 'success', message: 'E-mail enviado!' }])

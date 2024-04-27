@@ -16,6 +16,7 @@ import {
 import { Link } from '@inertiajs/react'
 import { ReactNode } from 'react'
 import { LuGauge, LuMenu, LuUsers } from 'react-icons/lu'
+import modele from '~/config/modele'
 
 const items = [
   {
@@ -58,7 +59,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         <Flex align="center" justify="center" mb="4">
           <Logo color="brand.300" />
           <Text fontSize="2xl" ml="2" fontWeight="semibold">
-            Modèle
+            {modele.appName}
           </Text>
         </Flex>
 

@@ -1,18 +1,19 @@
 import { Logo } from '@/components/logo'
 import { Box, Container, HStack, Heading, Text } from '@chakra-ui/react'
 import { Head, Link } from '@inertiajs/react'
+import modele from '~/config/modele'
 
 export default function ServerError(props: { error: any }) {
   return (
     <>
       <Head>
-        <title>Erro interno (5XX) | Modèle</title>
+        <title>Erro interno (5XX) | {modele.appName}</title>
       </Head>
       <Container px={4} py={32} maxW="3xl">
         <Box w="full" maxW="60ch" mx="auto">
           <HStack>
             <Logo h={8} />
-            <Heading size="xs">Modèle</Heading>
+            <Heading size="xs">{modele.appName}</Heading>
           </HStack>
           <Heading mt={5} mb={3} size="xs">
             Erro interno (5XX)

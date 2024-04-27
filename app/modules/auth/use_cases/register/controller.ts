@@ -3,6 +3,7 @@ import User from '../../../../shared/models/user.js'
 import mail from '@adonisjs/mail/services/main'
 import { registerValidator } from './validator.js'
 import CodeTypes from '../../../../shared/enums/code_types.js'
+import modele from '#config/modele'
 
 export default class RegisterController {
   async view({ inertia }: HttpContext) {
@@ -21,9 +22,9 @@ export default class RegisterController {
     await mail.sendLater((message) => {
       message
         .to(email)
-        .from('contato@lis-software.com.br', 'Modèle')
+        .from(modele.mail.from, modele.mail.name)
         .subject('Verifique seu endereço de e-mail')
-        .htmlView('mails/verify_email', { code: code.value })
+        .htmlView('mails/verify_email', { code: code.value, appName: modele.appName })
     })
 
     session.flash('notifications', [{ type: 'success', message: 'Conta criada!' }])

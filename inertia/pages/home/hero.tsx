@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react'
 import { Link } from '@inertiajs/react'
 import { LuLogIn } from 'react-icons/lu'
+import modele from '~/config/modele'
 
 export default function SplitScreen() {
   return (
@@ -19,7 +20,7 @@ export default function SplitScreen() {
         <Stack spacing={6} w="full" maxW="lg">
           <HStack>
             <Logo h={6} />
-            <Heading size="xs">Modèle</Heading>
+            <Heading size="xs">{modele.appName}</Heading>
           </HStack>
 
           <Heading size={{ base: 'md', lg: 'lg' }}>

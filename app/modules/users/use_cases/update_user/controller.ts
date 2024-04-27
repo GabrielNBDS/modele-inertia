@@ -4,6 +4,7 @@ import { confirmEmailUpdateValidator, updateUserValidator } from './validator.js
 import Code from '../../../../shared/models/code.js'
 import db from '@adonisjs/lucid/services/db'
 import CodeTypes from '../../../../shared/enums/code_types.js'
+import modele from '#config/modele'
 
 export default class UpdateUserController {
   async view({ inertia }: HttpContext) {
@@ -76,9 +77,9 @@ export default class UpdateUserController {
         await mail.sendLater((message) => {
           message
             .to(email)
-            .from('contato@lis-software.com.br', 'Modèle')
+            .from(modele.mail.from, modele.mail.name)
             .subject('Confirme seu novo endereço de e-mail')
-            .htmlView('mails/change_email', { code: code.value })
+            .htmlView('mails/change_email', { code: code.value, appName: modele.appName })
         })
 
         session.flash('emailChanged', true)

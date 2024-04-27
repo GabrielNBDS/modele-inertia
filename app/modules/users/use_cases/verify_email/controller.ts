@@ -4,6 +4,7 @@ import { verifyEmailValidator } from './validator.js'
 import Code from '../../../../shared/models/code.js'
 import CodeTypes from '../../../../shared/enums/code_types.js'
 import db from '@adonisjs/lucid/services/db'
+import modele from '#config/modele'
 
 export default class VerifyEmailController {
   async view({ auth, inertia, response }: HttpContext) {
@@ -61,9 +62,9 @@ export default class VerifyEmailController {
       await mail.sendLater((message) => {
         message
           .to(user.email)
-          .from('contato@lis-software.com.br', 'Modèle')
+          .from(modele.mail.from, modele.mail.name)
           .subject('Verify your email address')
-          .htmlView('mails/verify_email', { code: code.value })
+          .htmlView('mails/verify_email', { code: code.value, appName: modele.appName })
       })
 
       session.flash('notifications', [{ type: 'success', message: 'E-mail enviado!' }])
