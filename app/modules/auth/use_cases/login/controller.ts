@@ -3,6 +3,7 @@ import User from '../../../../shared/models/user.js'
 import { loginValidator } from './validator.js'
 import Session from '../../../../shared/models/session.js'
 import { v4 as uuidv4 } from 'uuid'
+import limiter from '@adonisjs/limiter/services/main'
 
 export default class LoginController {
   async view({ inertia }: HttpContext) {
@@ -12,8 +13,29 @@ export default class LoginController {
   async handle({ auth, session, request, response }: HttpContext) {
     const { email, password } = await request.validateUsing(loginValidator)
 
+    const loginLimiter = limiter.use({
+      requests: 5,
+      duration: '1 min',
+      blockDuration: '10 mins',
+    })
+
     try {
-      const user = await User.verifyCredentials(email, password)
+      const [error, user] = await loginLimiter.penalize(`login_${request.ip()}`, () => {
+        return User.verifyCredentials(email, password)
+      })
+
+      if (error) {
+        session.flashAll()
+        session.flash('notifications', [
+          {
+            type: 'error',
+            message: 'Muitas tentativas. Tente novamente em 10 minutos.',
+            duration: 10000,
+          },
+        ])
+        return response.redirect().back()
+      }
+
       await auth.use('web').login(user)
 
       const sessionToken = uuidv4()

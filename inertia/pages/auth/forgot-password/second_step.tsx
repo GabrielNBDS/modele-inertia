@@ -13,6 +13,7 @@ export default function ForgotPasswordSecondStep() {
   return (
     <>
       <Stack
+        as="form"
         spacing="6"
         onSubmit={(e) => {
           e.preventDefault()

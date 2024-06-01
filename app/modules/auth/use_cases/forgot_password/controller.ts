@@ -10,6 +10,7 @@ import CodeTypes from '../../../../shared/enums/code_types.js'
 import mail from '@adonisjs/mail/services/main'
 import db from '@adonisjs/lucid/services/db'
 import modele from '#config/modele'
+import limitAction from '../../../../shared/utils/limit_action.js'
 
 export default class ForgotPasswordController {
   async view({ inertia }: HttpContext) {
@@ -92,12 +93,24 @@ export default class ForgotPasswordController {
     if (!foundCode) {
       session.flash('notifications', [{ type: 'error', message: 'Código incorreto' }])
       session.flash('emailSent', true)
+      await limitAction({
+        requests: 3,
+        duration: '5 minutes',
+        key: `forgot_password_handle_${request.ip()}`,
+        session,
+      })
       return response.redirect().back()
     }
 
     if (foundCode.isExpired()) {
       session.flash('notifications', [{ type: 'error', message: 'Código expirado' }])
       session.flash('emailSent', true)
+      await limitAction({
+        requests: 3,
+        duration: '5 minutes',
+        key: `forgot_password_handle_${request.ip()}`,
+        session,
+      })
       return response.redirect().back()
     }
 
@@ -109,11 +122,28 @@ export default class ForgotPasswordController {
     } else {
       session.flash('notifications', [{ type: 'error', message: 'Erro ao validar e-mail' }])
       session.flash('emailSent', true)
+      await limitAction({
+        requests: 3,
+        duration: '5 minutes',
+        key: `forgot_password_handle_${request.ip()}`,
+        session,
+      })
       return response.redirect().back()
     }
   }
 
   async sendEmail({ session, request, response }: HttpContext) {
+    if (
+      await limitAction({
+        requests: 1,
+        duration: '10 minutes',
+        key: `forgot_password_send_email_${request.ip()}`,
+        session,
+      })
+    ) {
+      return response.redirect().back()
+    }
+
     const { email } = await request.validateUsing(forgotPasswordValidator)
 
     const user = await User.findByOrFail('email', email)
